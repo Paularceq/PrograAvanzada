@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="G7_DATABASEModelStoreContainer" CdmEntityContainer="G7_DATABASEEntities">
+    <EntitySetMapping Name="ROLES">
+      <EntityTypeMapping TypeName="G7_DATABASEModel.ROLE">
+        <MappingFragment StoreEntitySet="ROLES">
+          <ScalarProperty Name="ID_ROLE" ColumnName="ID_ROLE" />
+          <ScalarProperty Name="NAME_ROLE" ColumnName="NAME_ROLE" />
+          <ScalarProperty Name="DESC_ROLE" ColumnName="DESC_ROLE" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STATE_TICKET">
+      <EntityTypeMapping TypeName="G7_DATABASEModel.STATE_TICKET">
+        <MappingFragment StoreEntitySet="STATE_TICKET">
+          <ScalarProperty Name="ID_STATE" ColumnName="ID_STATE" />
+          <ScalarProperty Name="NAME_STATE" ColumnName="NAME_STATE" />
+          <ScalarProperty Name="DESC_STATE" ColumnName="DESC_STATE" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TICKETs">
+      <EntityTypeMapping TypeName="G7_DATABASEModel.TICKET">
+        <MappingFragment StoreEntitySet="TICKET">
+          <ScalarProperty Name="ID_TICKET" ColumnName="ID_TICKET" />
+          <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+          <ScalarProperty Name="DESC_TICKET" ColumnName="DESC_TICKET" />
+          <ScalarProperty Name="ID_STATE" ColumnName="ID_STATE" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="USU_OPEN" ColumnName="USU_OPEN" />
+          <ScalarProperty Name="USU_CHECK" ColumnName="USU_CHECK" />
+          <ScalarProperty Name="USU_APROVE" ColumnName="USU_APROVE" />
+          <ScalarProperty Name="USU_ARCHIVE" ColumnName="USU_ARCHIVE" />
+          <ScalarProperty Name="USU_DELETE" ColumnName="USU_DELETE" />
+          <ScalarProperty Name="USU_COMPLETE" ColumnName="USU_COMPLETE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="G7_DATABASEModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="USU_ID" ColumnName="USU_ID" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="PASSWD" ColumnName="PASSWD" />
+          <ScalarProperty Name="TEMP_PASSWD" ColumnName="TEMP_PASSWD" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="ID_ROLE" ColumnName="ID_ROLE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

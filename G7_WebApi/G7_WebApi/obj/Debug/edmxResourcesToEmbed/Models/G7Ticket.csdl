@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="G7_DATABASEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ROLE">
+    <Key>
+      <PropertyRef Name="ID_ROLE" />
+    </Key>
+    <Property Name="ID_ROLE" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME_ROLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESC_ROLE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ACTIVE" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__Users__ID_ROLE__3C69FB99" FromRole="ROLES" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="STATE_TICKET">
+    <Key>
+      <PropertyRef Name="ID_STATE" />
+    </Key>
+    <Property Name="ID_STATE" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME_STATE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESC_STATE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ACTIVE" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TICKETs" Relationship="Self.FK__TICKET__ID_STATE__412EB0B6" FromRole="STATE_TICKET" ToRole="TICKET" />
+  </EntityType>
+  <EntityType Name="TICKET">
+    <Key>
+      <PropertyRef Name="ID_TICKET" />
+    </Key>
+    <Property Name="ID_TICKET" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TITLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESC_TICKET" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID_STATE" Type="Int64" Nullable="false" />
+    <Property Name="ACTIVE" Type="Int32" Nullable="false" />
+    <Property Name="USU_OPEN" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USU_CHECK" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="USU_APROVE" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="USU_ARCHIVE" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="USU_DELETE" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="USU_COMPLETE" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="STATE_TICKET" Relationship="Self.FK__TICKET__ID_STATE__412EB0B6" FromRole="TICKET" ToRole="STATE_TICKET" />
+    <NavigationProperty Name="User" Relationship="Self.FK__TICKET__USU_APRO__440B1D61" FromRole="TICKET" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__TICKET__USU_ARCH__44FF419A" FromRole="TICKET" ToRole="Users" />
+    <NavigationProperty Name="User2" Relationship="Self.FK__TICKET__USU_CHEC__4316F928" FromRole="TICKET" ToRole="Users" />
+    <NavigationProperty Name="User3" Relationship="Self.FK__TICKET__USU_COMP__46E78A0C" FromRole="TICKET" ToRole="Users" />
+    <NavigationProperty Name="User4" Relationship="Self.FK__TICKET__USU_DELE__45F365D3" FromRole="TICKET" ToRole="Users" />
+    <NavigationProperty Name="User5" Relationship="Self.FK__TICKET__USU_OPEN__4222D4EF" FromRole="TICKET" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="USU_ID" />
+    </Key>
+    <Property Name="USU_ID" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FIRST_NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASSWD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TEMP_PASSWD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ACTIVE" Type="Int32" Nullable="false" />
+    <Property Name="ID_ROLE" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="ROLE" Relationship="Self.FK__Users__ID_ROLE__3C69FB99" FromRole="Users" ToRole="ROLES" />
+    <NavigationProperty Name="TICKETs" Relationship="Self.FK__TICKET__USU_APRO__440B1D61" FromRole="Users" ToRole="TICKET" />
+    <NavigationProperty Name="TICKETs1" Relationship="Self.FK__TICKET__USU_ARCH__44FF419A" FromRole="Users" ToRole="TICKET" />
+    <NavigationProperty Name="TICKETs2" Relationship="Self.FK__TICKET__USU_CHEC__4316F928" FromRole="Users" ToRole="TICKET" />
+    <NavigationProperty Name="TICKETs3" Relationship="Self.FK__TICKET__USU_COMP__46E78A0C" FromRole="Users" ToRole="TICKET" />
+    <NavigationProperty Name="TICKETs4" Relationship="Self.FK__TICKET__USU_DELE__45F365D3" FromRole="Users" ToRole="TICKET" />
+    <NavigationProperty Name="TICKETs5" Relationship="Self.FK__TICKET__USU_OPEN__4222D4EF" FromRole="Users" ToRole="TICKET" />
+  </EntityType>
+  <Association Name="FK__Users__ID_ROLE__3C69FB99">
+    <End Role="ROLES" Type="Self.ROLE" Multiplicity="1" />
+    <End Role="Users" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROLES">
+        <PropertyRef Name="ID_ROLE" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="ID_ROLE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__ID_STATE__412EB0B6">
+    <End Role="STATE_TICKET" Type="Self.STATE_TICKET" Multiplicity="1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STATE_TICKET">
+        <PropertyRef Name="ID_STATE" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="ID_STATE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_APRO__440B1D61">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_APROVE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_ARCH__44FF419A">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_ARCHIVE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_CHEC__4316F928">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_CHECK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_COMP__46E78A0C">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_COMPLETE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_DELE__45F365D3">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_DELETE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TICKET__USU_OPEN__4222D4EF">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="USU_ID" />
+      </Principal>
+      <Dependent Role="TICKET">
+        <PropertyRef Name="USU_OPEN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="G7_DATABASEEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ROLES" EntityType="Self.ROLE" />
+    <EntitySet Name="STATE_TICKET" EntityType="Self.STATE_TICKET" />
+    <EntitySet Name="TICKETs" EntityType="Self.TICKET" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__Users__ID_ROLE__3C69FB99" Association="Self.FK__Users__ID_ROLE__3C69FB99">
+      <End Role="ROLES" EntitySet="ROLES" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__ID_STATE__412EB0B6" Association="Self.FK__TICKET__ID_STATE__412EB0B6">
+      <End Role="STATE_TICKET" EntitySet="STATE_TICKET" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_APRO__440B1D61" Association="Self.FK__TICKET__USU_APRO__440B1D61">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_ARCH__44FF419A" Association="Self.FK__TICKET__USU_ARCH__44FF419A">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_CHEC__4316F928" Association="Self.FK__TICKET__USU_CHEC__4316F928">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_COMP__46E78A0C" Association="Self.FK__TICKET__USU_COMP__46E78A0C">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_DELE__45F365D3" Association="Self.FK__TICKET__USU_DELE__45F365D3">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TICKET__USU_OPEN__4222D4EF" Association="Self.FK__TICKET__USU_OPEN__4222D4EF">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TICKET" EntitySet="TICKETs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

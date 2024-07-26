@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8d3c982cd1324f03a155163d8410ca8c" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="G7_DATABASEModel.ROLE" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="G7_DATABASEModel.STATE_TICKET" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="G7_DATABASEModel.TICKET" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="G7_DATABASEModel.User" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__Users__ID_ROLE__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__ID_STATE__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_APRO__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_ARCH__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_CHEC__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_COMP__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_DELE__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="G7_DATABASEModel.FK__TICKET__USU_OPEN__4222D4EF" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
