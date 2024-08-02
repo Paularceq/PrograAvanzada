@@ -34,4 +34,11 @@ namespace G7_WebApi.Models
         public virtual User User4 { get; set; }
         public virtual User User5 { get; set; }
     }
+
+    public class TicketAnswer
+    {
+        public string Code   { get; set; }
+        public string Message { get; set; }
+        public TICKET info { get; set; }
+    }
 }

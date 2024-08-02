@@ -11,10 +11,12 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using G7_WebApi.Utilities;
+using System.Data.Entity;
 
 
 namespace G7_WebApi.Controllers
 {
+    [Authorize]
     public class UserController : ApiController
     {
         private G7_DATABASEEntities db = new G7_DATABASEEntities();
@@ -138,6 +140,7 @@ namespace G7_WebApi.Controllers
         {
             var user = new User()
             {
+
                 USU_ID = "123456789",
                     FIRST_NAME = "Juan",
                     LAST_NAME = "Montoya",
@@ -158,6 +161,101 @@ namespace G7_WebApi.Controllers
                 });
 
             }
+
+        [AllowAnonymous] //Debe ser anonimo ya que si no tengo mi passwd no puedo generar un token
+        [HttpPost]
+        [Route("api/resetPassword")]
+        public HttpResponseMessage resetPassword(string email) //recibe el email del usuario para buscar
+        {
+            try
+            {
+                var user = db.Users.Where(x => x.EMAIL == email).FirstOrDefault(); //Lo busca
+
+                if (user != null) //Si lo encuentra
+                {
+                    user.TEMP_PASSWD = Helper.GenerateTempPassword(); //Genera una passwd temporal 
+                    db.Entry(user).State = EntityState.Modified; //Actualiza
+                    db.SaveChanges();
+
+                    //Envia una passwd con la contraseña temporal al correo para realizar el cambio
+                    Helper.SendEmail(ConfigurationManager.AppSettings["mailSMTP"], ConfigurationManager.AppSettings["asuntoSMTP"], "Su contraseña temporal para el sistema es: " + user.TEMP_PASSWD);
+                    return Request.CreateResponse(HttpStatusCode.OK, new UserAnswer { Codigo = "1", Mensaje = "Su contraseña temporal fue establecida" });
+                }
+                else //Si no lo encuentra devuelve not found
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, new UserAnswer { Codigo = "-1", Mensaje = "Usuario no encontrado" });
+                }
+            }catch (Exception ex) //En caso de que se caiga, internal server error
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("api/setPassword")] //Este metodo es para los usuarios creados por un administrador
+        public HttpResponseMessage setPassword(User user) //Al crear un usuario el administrador se crea una contraseña temporal que debe cambiarse la primera vez al ingresar al sistema
+        {
+            try
+            {
+                if (user != null) //Verifica el estado del usuario
+                {
+                    user.PASSWD = Helper.Encrypt(user.PASSWD); //Encripta la nueva contraseña
+                    user.TEMP_PASSWD = null; //Limpia la contraseña temporal
+                    db.Entry(user).State = EntityState.Modified; //Actualiza 
+                    db.SaveChanges(); 
+                    return Request.CreateResponse(HttpStatusCode.OK, new UserAnswer { Codigo = "1", Mensaje = "Contraseña actualizada correctamente" });//Si logra actualizar respuesta positiva
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, new UserAnswer { Codigo = "-1", Mensaje = "Usuario no encontrado" }); //Si no lo encuentra devuelve un not found
+                }
+            }catch  (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex); //Si se cae error del servidor
+            }
+        }
+
+        [HttpPut]
+        [Route("api/updateUser/admin")] //Actualizar usuarios (unicamente puede hacerlo un administrador)
+        public HttpResponseMessage updateUserAdmin(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid) //Valida que el modelo sea valido
+                {
+                    var original = db.Users.Find(user.USU_ID); //busca una copia del original
+
+                    if (original.EMAIL != user.EMAIL) //verifica que el correo sea igual
+                    {
+                        var correos = db.Users.Where(x => x.EMAIL == user.EMAIL).Select(x => x.EMAIL).ToList(); //si no es igual verifica que este no exista
+
+                        if (correos.Count() > 0) //si existe
+                        { //retorna un mensaje de alerta con codigo de error
+                            return Request.CreateResponse(HttpStatusCode.NotModified, new UserAnswer { Codigo = "-1", Mensaje = "El correo enviado no es valido, intente con otro correo" });
+                        }
+                    }
+
+                    if (original.PASSWD != user.PASSWD) //Verifica si la passwd ha sido modificada
+                    {
+                        user.PASSWD = Helper.Encrypt(user.PASSWD); //Si fue modificada se manda a encriptar
+                    }
+
+
+
+                    db.Entry(user).State = EntityState.Modified; //realiza el cambio
+                    db.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK, new UserAnswer { Codigo = "1", Mensaje = "Se ha actualizado la informacion.." });
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "No se proporciono un modelo valido"); //Si el modelo no es valido, envia mensaje de error
+                }
+            }catch (Exception e)
+            { //Si se cae, error del servidor
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+            }
+        }
 
         private string GenerateJWT(User user) //Generar el token
         {

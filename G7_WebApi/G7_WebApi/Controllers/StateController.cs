@@ -1,30 +1,30 @@
 ﻿using G7_WebApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Data.Entity;
 
 namespace G7_WebApi.Controllers
 {
     [Authorize]
-    public class RoleController : ApiController
+    public class StateController : ApiController
     {
         private G7_DATABASEEntities db = new G7_DATABASEEntities();
 
         [HttpGet]
-        [Route("api/AllRoles")] //Obtener los roles
-        public HttpResponseMessage getRoles()
+        [Route("api/AllStates")] //Obtener los estados
+        public HttpResponseMessage getStates()
         {
             try
             {
-                var roles = db.ROLES.ToList().Where(x => x.ACTIVE == 1); //Extrae los roles activos
+                var estados = db.STATE_TICKET.ToList().Where(x => x.ACTIVE == 1); //Extrae los estados activos
 
-                if (roles != null && roles.Count() > 0) //Valida que encuentre algun rol
+                if (estados != null && estados.Count() > 0) //Valida que encuentre algun estado
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, roles); //Si encuentra devuelve los roles con status correcto
+                    return Request.CreateResponse(HttpStatusCode.OK, estados); //Si encuentra devuelve los estados con status correcto
                 }
                 else
                 {
@@ -39,16 +39,16 @@ namespace G7_WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/searchRole/{id}")] //Extrae el rol solicitado
-        public HttpResponseMessage getRole(long id)
+        [Route("api/searchState/{id}")] //Extrae el estado solicitado
+        public HttpResponseMessage getState(long id)
         {
             try
             {
-                var role = db.ROLES.FirstOrDefault(x => x.ID_ROLE == id); //Busca el rol solicitado
+                var estado = db.STATE_TICKET.FirstOrDefault(x => x.ID_STATE == id); //Busca el estado solicitado
 
-                if (role != null) //Valida que no venga vacio
+                if (estado != null) //Valida que no venga vacio
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, role); //Si lo encuentra devuelve ok y el rol solicitado
+                    return Request.CreateResponse(HttpStatusCode.OK, estado); //Si lo encuentra devuelve ok y el estado solicitado
                 }
                 else
                 {
@@ -63,16 +63,16 @@ namespace G7_WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("api/CreateRole")]
-        public HttpResponseMessage createRole(ROLE entity) //Metodo para crear los roles
+        [Route("api/CreateState")]
+        public HttpResponseMessage createState(STATE_TICKET entity) //Metodo para crear los estados
         {
             try
             {
-                entity.ACTIVE = 1; //Asigna el rol nuevo como activo
+                entity.ACTIVE = 1; //Asigna el estado nuevo como activo
 
                 if (ModelState.IsValid) //Valida que el modelo obtenido sea valido
                 {
-                    db.ROLES.Add(entity); //Lo añade a la base de datos
+                    db.STATE_TICKET.Add(entity); //Lo añade a la base de datos
                     db.SaveChanges(); //Lo guarda en la base de datos
                     return Request.CreateResponse(HttpStatusCode.OK, "Se ha creado el rol satisfactoriamente..."); //Devuelve respuesta exitosa
                 }
@@ -89,21 +89,22 @@ namespace G7_WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("api/UpdateRole/{id}")] //Actualizar Roles
-        public HttpResponseMessage UpdateRole(long id, ROLE entity)  //Id del rol y la entidad modificada
+        [Route("api/UpdateState/{id}")] //Actualizar States
+        public HttpResponseMessage UpdateState(long id, STATE_TICKET entity)  //Id del estado y la entidad modificada
         {
-            try 
+            try
             {
-                if(entity != null)
+                if (entity != null)
                 {
                     db.Entry(entity).State = EntityState.Modified; //Actualiza la entidad
                     db.SaveChanges(); //Guarda Cambios
 
-                    return Request.CreateResponse(HttpStatusCode.OK, "Se ha actualizado correctamente el rol!"); //Si actualiza correctamente
+                    return Request.CreateResponse(HttpStatusCode.OK, "Se ha actualizado correctamente el estado!"); //Si actualiza correctamente
                 }
 
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Ha ocurrido un error al realizar la actualizacion!"); //Si trae algun error
-            }catch(Exception e) //En caso de caida del sistema
+            }
+            catch (Exception e) //En caso de caida del sistema
             {
                 Console.WriteLine(e);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
@@ -111,28 +112,28 @@ namespace G7_WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("api/DeleteRole/{id}")] //Elimina el Rol de forma logica
-        public HttpResponseMessage DeleteRole(long id)
+        [Route("api/DeleteState/{id}")] //Elimina el estado de forma logica
+        public HttpResponseMessage DeleteState(long id)
         {
             try
             {
-                var rol = db.ROLES.Find(id); //Busca el rol a eliminar
+                var estado = db.STATE_TICKET.Find(id); //Busca el estado a eliminar
 
-                if(rol != null)
+                if (estado != null)
                 {
-                    rol.ACTIVE = 0; //cambia el estado a inactivo
-                    db.Entry(rol).State = EntityState.Modified; //Actualiza
+                    estado.ACTIVE = 0; //cambia el estado a inactivo
+                    db.Entry(estado).State = EntityState.Modified; //Actualiza
                     db.SaveChanges(); //Guarda cambios
                     return Request.CreateResponse(HttpStatusCode.OK, "Se elimino correctamente el rol..");
                 }
 
                 return Request.CreateResponse(HttpStatusCode.NotFound, "El recurso solicitado no existe.."); //En caso de que no lo encuentre
-            }catch (Exception e) //En caso de error
+            }
+            catch (Exception e) //En caso de error
             {
                 Console.WriteLine(e);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
-
     }
 }
