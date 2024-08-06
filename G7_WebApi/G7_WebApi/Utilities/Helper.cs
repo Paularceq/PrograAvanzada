@@ -89,12 +89,16 @@ namespace G7_WebApi.Utilities
             string mailSMTP = ConfigurationManager.AppSettings["mailSMTP"]; //extrae el dominio de donde se envia el correo
             string passSMTP = ConfigurationManager.AppSettings["passSMTP"]; //Extrae la clave proporcionada por el api del servidor alojado
 
+            var template = HttpContext.Current.Server.MapPath("~/Layouts/LayoutNewUser.html"); //Cargamos la plantilla html del correo
+            var email = File.ReadAllText(template); //Lee la plantilla como si fuera un string
+            var emailBody = email.Replace("{Tittle}", Subject).Replace("{Message}",Message); //reemplaza las partes seleccionadas
+
             MailMessage msg = new MailMessage(); 
             msg.To.Add(new MailAddress(Recipient)); //Agrega a quien va destinado
             msg.From = new MailAddress(mailSMTP); //Agrega quien lo envia
             msg.Subject = Subject; //Agrega el asunto
-            msg.Body = Message; //Agrega el mensaje
-            msg.IsBodyHtml = true; //Valida que el mensaje se envie de forma html
+            msg.Body = emailBody; //Agrega el mensaje  | En este caso el html de la plantilla
+            msg.IsBodyHtml = true; //Valida que el mensaje se envie de forma html ^ Gracias a esta funcion se puede personalizar el cuerpo del correo
 
             SmtpClient client = new SmtpClient(); //Crea el cliente
             client.UseDefaultCredentials = false;

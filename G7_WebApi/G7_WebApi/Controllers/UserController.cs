@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using G7_WebApi.Utilities;
 using System.Data.Entity;
+using System.Web.Hosting;
 
 
 namespace G7_WebApi.Controllers
@@ -145,7 +146,7 @@ namespace G7_WebApi.Controllers
                     FIRST_NAME = "Juan",
                     LAST_NAME = "Montoya",
                     EMAIL = "jmontoya@ufide.ac.cr",
-                    PASSWD = Helper.GenerateTempPassword()
+                    PASSWD = Helper.Decrypt("TSe9XrDA3IHecdvxR5Us6g==")
                 };
 
                 var token = GenerateJWT(user);
@@ -165,11 +166,11 @@ namespace G7_WebApi.Controllers
         [AllowAnonymous] //Debe ser anonimo ya que si no tengo mi passwd no puedo generar un token
         [HttpPost]
         [Route("api/resetPassword")]
-        public HttpResponseMessage resetPassword(string email) //recibe el email del usuario para buscar
+        public HttpResponseMessage resetPassword(User reset) //recibe el email del usuario para buscar
         {
             try
             {
-                var user = db.Users.Where(x => x.EMAIL == email).FirstOrDefault(); //Lo busca
+                var user = db.Users.Where(x => x.EMAIL == reset.EMAIL).FirstOrDefault(); //Lo busca
 
                 if (user != null) //Si lo encuentra
                 {

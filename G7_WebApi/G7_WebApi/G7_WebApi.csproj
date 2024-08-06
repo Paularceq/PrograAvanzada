@@ -275,6 +275,7 @@
       <DependentUpon>G7Ticket.edmx</DependentUpon>
       <LastGenOutput>G7Ticket.cs</LastGenOutput>
     </Content>
+    <Content Include="Layouts\LayoutNewUser.html" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
